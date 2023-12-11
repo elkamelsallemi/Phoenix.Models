@@ -42,3 +42,12 @@ StyleCopReport.xml
 
 # NuGet Packages
 *.nupkg
+
+#ppsettings.json
+**/appsettings.json
+
+#appsettings.Development.json
+**/appsettings.Development.json
+
+#bin dierectory
+**/bin/
