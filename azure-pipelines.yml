@@ -2,45 +2,59 @@ trigger:
 - main
 
 pool:
-  name: 'Default'
+  name: Default
+  demands: msbuild
 
 variables:
-  buildConfiguration: 'Release'
-  dotnetSdkVersion: '6.x'
+  ArtifactName: 'drop'
 
 steps:
 - task: UseDotNet@2
-  displayName: 'Use .NET SDK $(dotnetSdkVersion)'
+  displayName: 'Use .NET Core sdk 6.x'
   inputs:
-    version: '$(dotnetSdkVersion)'
+    version: 6.x
 
 - task: DotNetCoreCLI@2
   displayName: 'Restore project dependencies'
   inputs:
-    command: 'restore'
+    command: restore
     projects: '**/*.csproj'
 
-- task: DotNetCoreCLI@2
-  displayName: 'Build the project - $(buildConfiguration)'
+- task: MSBuild@1
+  displayName: 'Build solution **/*.sln'
   inputs:
-    command: 'build'
-    arguments: '--no-restore --configuration $(buildConfiguration)'
-    projects: '**/*.csproj'
+    configuration: '$(buildConfiguration)'
 
-- task: DotNetCoreCLI@2
-  displayName: '$(Build.ArtifactStagingDirectory)'
+- task: NuGetCommand@2
+  displayName: 'NuGet pack'
   inputs:
-    command: 'pack'
-    projects: '**/*.csproj'
-    arguments: '--no-build --configuration $(buildConfiguration) --output $(Build.ArtifactStagingDirectory)'
+    command: pack
+    packagesToPack: '**/*.csproj '
+    configuration: '$(buildConfiguration)'
+    packDestination: '$(Build.ArtifactStagingDirectory)'
+    versioningScheme: byPrereleaseNumber
     majorVersion: '1'
     minorVersion: '0'
-    patchVersion: '0'
- 
+    patchVersion: '1'
+
 - task: NuGetCommand@2
-  displayName: 'Publish NuGet package to $(System.TeamProject)/Phoenix.Models.Feeds'
+  displayName: 'NuGet push $(Build.ArtifactStagingDirectory)'
   inputs:
     command: push
-    feedPublish: '$(System.TeamProject)/Phoenix.Models.Feeds'
-    allowPackageConflicts: true
-  condition: succeeded()
+    packagesToPush: '$(Build.ArtifactStagingDirectory)/**/*.nupkg'
+    publishVstsFeed: 'db8ca479-0212-4cd1-8a09-2b3abcb94acd/8621e47e-89e8-49c1-87bb-1a7285608233'
+
+- task: PublishSymbols@2
+  displayName: 'Publish symbols path'
+  inputs:
+    SearchPattern: '**\bin\**\*.pdb'
+    PublishSymbols: false
+  continueOnError: true
+
+- task: PublishBuildArtifacts@1
+  displayName: 'Publish Artifact'
+  inputs:
+    PathtoPublish: '$(build.artifactstagingdirectory)'
+    ArtifactName: '$(Parameters.ArtifactName)'
+  condition: succeededOrFailed()
+
