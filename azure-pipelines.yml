@@ -39,9 +39,9 @@ steps:
     patchVersion: '0'
  
 - task: NuGetCommand@2
-  displayName: 'Publish NuGet package'
+  displayName: 'Publish NuGet package to $(System.TeamProject)/Phoenix.Models.Feeds'
   inputs:
     command: push
-    feedPublish: '$(System.TeamProject)/CodeHub_Phoenix_Feed'
+    feedPublish: '$(System.TeamProject)/Phoenix.Models.Feeds'
     allowPackageConflicts: true
   condition: succeeded()
