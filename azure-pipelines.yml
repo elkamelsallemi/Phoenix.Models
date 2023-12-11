@@ -42,6 +42,8 @@ steps:
   displayName: 'Publish NuGet package to $(System.TeamProject)/Phoenix.Models.Feeds'
   inputs:
     command: push
+    packagesToPush: '$(Build.ArtifactStagingDirectory)/*.nupkg'
+    nuGetFeedType: 'internal'
     feedPublish: '$(System.TeamProject)/Phoenix.Models.Feeds'
     allowPackageConflicts: true
   condition: succeeded()
