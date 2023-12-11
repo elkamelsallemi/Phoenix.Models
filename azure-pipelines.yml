@@ -32,7 +32,7 @@ steps:
   inputs:
     command: 'pack'
     projects: '**/*.csproj'
-    arguments: '--no-build --configuration $(buildConfiguration)'
+    arguments: '--no-build --configuration $(buildConfiguration) --output $(Build.ArtifactStagingDirectory)/$(buildConfiguration)'
     versioningScheme: byPrereleaseNumber
     majorVersion: '1'
     minorVersion: '0'
@@ -42,7 +42,7 @@ steps:
   displayName: 'Publish NuGet package to $(System.TeamProject)/Phoenix.Models.Feeds'
   inputs:
     command: push
-    packagesToPush: '$(Build.ArtifactStagingDirectory)/*.nupkg'
+    packagesToPush: '$(Build.ArtifactStagingDirectory)/$(buildConfiguration)/*.nupkg'
     nuGetFeedType: 'internal'
     feedPublish: '$(System.TeamProject)/Phoenix.Models.Feeds'
     allowPackageConflicts: true
