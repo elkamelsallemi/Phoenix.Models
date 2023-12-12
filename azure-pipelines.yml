@@ -33,6 +33,7 @@ steps:
     packagesToPack: '**/*.csproj '
     configuration: '$(buildConfiguration)'
     packDestination: '$(Build.ArtifactStagingDirectory)'
+    versioningScheme: byPrereleaseNumber
     majorVersion: '1'
     minorVersion: '0'
     patchVersion: '0'
