@@ -35,7 +35,7 @@ steps:
     packDestination: '$(Build.ArtifactStagingDirectory)'
     majorVersion: '1'
     minorVersion: '0'
-    patchVersion: '1'
+    patchVersion: '0'
 
 - task: NuGetCommand@2
   displayName: 'NuGet push $(Build.ArtifactStagingDirectory)'
