@@ -36,8 +36,9 @@ steps:
     versioningScheme: byPrereleaseNumber
     majorVersion: '1'
     minorVersion: '0'
-    patchVersion: '0'
-
+    patchVersion: '1'
+    options: '--exclude **\Phoenix.Models.exe'
+    
 - task: NuGetCommand@2
   displayName: 'NuGet push $(Build.ArtifactStagingDirectory)'
   inputs:
