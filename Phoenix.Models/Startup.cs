@@ -1,12 +1,6 @@
-﻿using System;
+﻿var builder = WebApplication.CreateBuilder(args);
+var app = builder.Build();
 
-namespace Phoenix.Models
-{
-    public class Startup
-    {
-        static void Main()
-        {
-            Console.WriteLine("Hello, World!");
-        }
-    }
-}
+app.MapGet("/", () => "Hello World!");
+
+app.Run();

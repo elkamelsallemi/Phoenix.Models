@@ -4,7 +4,12 @@
     <TargetFramework>net6.0</TargetFramework>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
-    <PackExclude>**\Phoenix.Models.exe</PackExclude>
+	<PackExclude>**\Phoenix.Models.exe</PackExclude>
+	<PackExclude>**\bin\$(Configuration)\Phoenix.Models.exe</PackExclude>
   </PropertyGroup>
 
+  <Target Name="RemoveUnwantedFiles" BeforeTargets="Build">
+	<Delete Files="$(OutputPath)\Phoenix.Models.exe" />
+  </Target>
+	
 </Project>
